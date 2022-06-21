@@ -12,14 +12,8 @@ jobs:
           java-version: 11
       - name: Make gradlew executable
         run: 'chmod +x ./gradlew'
-  test:
-    runs-on: macos-latest
-    steps:
       - name: Gradle build
         run: './gradlew clean build'
-  deploy:
-    runs-on: macos-latest
-    steps:
       - name: Publish to Maven Central
         if: github.ref == 'refs/heads/main'
         run: './gradlew publish'
