@@ -16,59 +16,56 @@ val mapper = jacksonObjectMapper()
 annotation class JsonMarker
 
 @JsonMarker
-abstract class JacksonObject(val node: JsonNode) {
+abstract class JacksonElement(val node: JsonNode) {
 
     override fun hashCode(): Int = node.hashCode()
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (other !is JacksonObject) return false
+        if (other !is JacksonElement) return false
         return node == other.node
     }
 
     override fun toString(): String = mapper.writeValueAsString(node)
 }
 
-class JsonObject(node: ObjectNode = mapper.createObjectNode()) : JacksonObject(node) {
+class JacksonObject(node: ObjectNode = mapper.createObjectNode()) : JacksonElement(node) {
 
-    fun `object`(key: String, value: JsonObject.() -> Unit) = set(key, JsonObject().apply(value).node)
-    fun obj(key: String, value: JsonObject.() -> Unit) = `object`(key, value)
+    fun `object`(key: String, value: JacksonObject.() -> Unit): JacksonObject = put(key, JacksonObject().apply(value).node)
 
-    fun array(key: String, value: JsonArray.() -> Unit) = set(key, JsonArray().apply(value).node)
-    fun arr(key: String, value: JsonArray.() -> Unit) = array(key, value)
+    fun obj(key: String, value: JacksonObject.() -> Unit): JacksonObject = `object`(key, value)
 
-    fun put(key: String, value: String) = set(key, TextNode(value))
-    fun put(key: String, value: Int) = set(key, IntNode(value))
-    fun put(key: String, value: Long) = set(key, LongNode(value))
-    fun put(key: String, value: Double) = set(key, DoubleNode(value))
-    fun put(key: String, value: Boolean) = set(key, BooleanNode.valueOf(value))
+    fun array(key: String, value: JacksonArray.() -> Unit): JacksonObject = put(key, JacksonArray().apply(value).node)
+    fun arr(key: String, value: JacksonArray.() -> Unit): JacksonObject = array(key, value)
 
-    private fun set(key: String, value: JsonNode) {
-        (node as ObjectNode).replace(key, value)
-    }
+    fun put(key: String, value: String): JacksonObject = put(key, TextNode(value))
+    fun put(key: String, value: Int): JacksonObject = put(key, IntNode(value))
+    fun put(key: String, value: Long): JacksonObject = put(key, LongNode(value))
+    fun put(key: String, value: Double): JacksonObject = put(key, DoubleNode(value))
+    fun put(key: String, value: Boolean): JacksonObject = put(key, BooleanNode.valueOf(value))
+
+    private fun put(key: String, value: JsonNode) = (node as ObjectNode).replace(key, value).let { this }
 }
 
-class JsonArray(array: ArrayNode = mapper.createArrayNode()) : JacksonObject(array) {
+class JacksonArray(array: ArrayNode = mapper.createArrayNode()) : JacksonElement(array) {
 
-    fun `object`(value: JsonObject.() -> Unit) = add(JsonObject().apply(value).node)
-    fun obj(value: JsonObject.() -> Unit) = `object`(value)
+    fun `object`(value: JacksonObject.() -> Unit): JacksonArray = add(JacksonObject().apply(value).node)
+    fun obj(value: JacksonObject.() -> Unit): JacksonArray = `object`(value)
 
-    fun array(value: JsonArray.() -> Unit) = add(JsonArray().apply(value).node)
-    fun arr(value: JsonArray.() -> Unit) = array(value)
+    fun array(value: JacksonArray.() -> Unit): JacksonArray = add(JacksonArray().apply(value).node)
+    fun arr(value: JacksonArray.() -> Unit): JacksonArray = array(value)
 
-    fun add(value: String) = add(TextNode(value))
-    fun add(value: Int) = add(IntNode(value))
-    fun add(value: Long) = add(LongNode(value))
-    fun add(value: Double) = add(DoubleNode(value))
-    fun add(value: Boolean) = add(BooleanNode.valueOf(value))
+    fun add(value: String): JacksonArray = add(TextNode(value))
+    fun add(value: Int): JacksonArray = add(IntNode(value))
+    fun add(value: Long): JacksonArray = add(LongNode(value))
+    fun add(value: Double): JacksonArray = add(DoubleNode(value))
+    fun add(value: Boolean): JacksonArray = add(BooleanNode.valueOf(value))
 
-    private fun add(node: JsonNode) {
-        (this.node as ArrayNode).add(node)
-    }
+    private fun add(node: JsonNode) = (this.node as ArrayNode).add(node).let { this }
 }
 
-fun `object`(init: JsonObject.() -> Unit): JsonObject = JsonObject().apply(init)
-fun obj(init: JsonObject.() -> Unit): JsonObject = `object`(init)
+fun `object`(init: JacksonObject.() -> Unit): JacksonObject = JacksonObject().apply(init)
+fun obj(init: JacksonObject.() -> Unit): JacksonObject = `object`(init)
 
-fun array(init: JsonArray.() -> Unit): JsonArray = JsonArray().apply(init)
-fun arr(init: JsonArray.() -> Unit): JsonArray = array(init)
+fun array(init: JacksonArray.() -> Unit): JacksonArray = JacksonArray().apply(init)
+fun arr(init: JacksonArray.() -> Unit): JacksonArray = array(init)

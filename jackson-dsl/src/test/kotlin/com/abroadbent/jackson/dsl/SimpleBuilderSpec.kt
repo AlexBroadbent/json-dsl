@@ -1,5 +1,6 @@
 package com.abroadbent.jackson.dsl
 
+import com.fasterxml.jackson.databind.node.ObjectNode
 import io.kotest.matchers.shouldBe
 
 class SimpleBuilderSpec : BaseSpec({
@@ -19,7 +20,7 @@ class SimpleBuilderSpec : BaseSpec({
             .add(3.14)
             .add(false)
 
-        json shouldBe JsonArray(expected)
+        json shouldBe JacksonArray(expected)
     }
 
     should("build object") {
@@ -38,7 +39,7 @@ class SimpleBuilderSpec : BaseSpec({
             .put("double", 3.14)
             .put("boolean", true)
 
-        json shouldBe JsonObject(expected)
+        json shouldBe JacksonObject(expected)
     }
 
     should("equate array toString values") {
@@ -59,5 +60,20 @@ class SimpleBuilderSpec : BaseSpec({
         }
 
         json.toString() shouldBe """{"foo":"bar","ham":472,"spam":false}"""
+    }
+
+    should("return allow chained operations") {
+        val json = obj {}.put("foo", "bar").arr("egg") { add(123).add(456).add(789) }
+
+        val expected = mapper.createObjectNode()
+            .put("foo", "bar")
+            .set<ObjectNode>(
+                "egg", mapper.createArrayNode()
+                    .add(123)
+                    .add(456)
+                    .add(789)
+            )
+
+        json shouldBe JacksonObject(expected)
     }
 })

@@ -26,7 +26,7 @@ class NestedBuilderSpec : BaseSpec({
                     )
             )
 
-        json shouldBe JsonArray(expected)
+        json shouldBe JacksonArray(expected)
     }
 
     should("build mixed object") {
@@ -49,7 +49,7 @@ class NestedBuilderSpec : BaseSpec({
                     .set("four", mapper.createArrayNode().add("foobar"))
             )
 
-        json shouldBe JsonObject(expected as ObjectNode)
+        json shouldBe JacksonObject(expected as ObjectNode)
     }
 
     should("build with shortened names object") {
@@ -83,7 +83,7 @@ class NestedBuilderSpec : BaseSpec({
                     .put("five", 3.14)
             )
 
-        json shouldBe JsonObject(expected)
+        json shouldBe JacksonObject(expected)
     }
 
     should("build with shortened names array") {
@@ -108,6 +108,6 @@ class NestedBuilderSpec : BaseSpec({
                     .put("one", 3.14)
             )
 
-        json shouldBe JsonArray(expected)
+        json shouldBe JacksonArray(expected)
     }
 })

@@ -62,4 +62,20 @@ class SimpleBuilderSpec : BaseSpec({
 
         json.toString() shouldBe """{"foo":"bar","ham":472,"spam":false}"""
     }
+
+    should("return allow chained operations") {
+        val json = obj {}.put("foo", "bar").arr("egg") { add(123).add(456).add(789) }
+
+        val expected = JsonObject()
+            .apply { addProperty("foo", "bar") }
+            .apply {
+                add("egg", JsonArray()
+                    .apply { add(123) }
+                    .apply { add(456) }
+                    .apply { add(789) }
+                )
+            }
+
+        json shouldBe GsonObject(expected)
+    }
 })
