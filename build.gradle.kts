@@ -1,7 +1,7 @@
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
-    kotlin("jvm") version "1.6.21"
+    kotlin("jvm") version "1.7.0"
     id("org.jlleitschuh.gradle.ktlint") version "10.2.0"
     jacoco
     `maven-publish`
@@ -31,7 +31,7 @@ subprojects {
     }
 
     dependencies {
-        implementation(kotlin("stdlib", version = "1.6.21"))
+        implementation(kotlin("stdlib", version = "1.7.0"))
 
         testImplementation("io.kotest:kotest-runner-junit5:5.3.1")
     }
@@ -123,13 +123,11 @@ subprojects {
             }
         }
 
-        val NEXUS_USERNAME: String by project
-        val NEXUS_PASSWORD: String by project
         repositories {
             maven {
                 credentials {
-                    username = NEXUS_USERNAME
-                    password = NEXUS_PASSWORD
+                    username = System.getenv("NEXUS_USERNAME")
+                    password = System.getenv("NEXUS_PASSWORD")
                 }
                 name = this@subprojects.name
                 setUrl("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")

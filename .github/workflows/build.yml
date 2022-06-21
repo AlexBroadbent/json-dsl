@@ -13,7 +13,13 @@ jobs:
       - name: Make gradlew executable
         run: 'chmod +x ./gradlew'
       - name: Gradle build
+        env:
+          NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
+          NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
         run: './gradlew clean build'
       - name: Publish to Maven Central
         if: github.ref == 'refs/heads/main'
         run: './gradlew publish'
+        env:
+          NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
+          NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
