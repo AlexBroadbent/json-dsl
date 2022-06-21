@@ -1,5 +1,5 @@
 
-![Github Actions Build](https://img.shields.io/github/workflow/status/AlexBroadbent/json-dsl/)
+![Github Actions Build](https://img.shields.io/github/workflow/status/AlexBroadbent/json-dsl/Build)
 ![Maven Central](https://img.shields.io/maven-central/v/com.abroadbent/json-dsl)
 ---
 
