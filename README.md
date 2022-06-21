@@ -1,6 +1,8 @@
 
 ![Github Actions Build](https://img.shields.io/github/workflow/status/AlexBroadbent/json-dsl/Build)
-![Maven Central](https://img.shields.io/maven-central/v/com.abroadbent/json-dsl)
+![Jackson DSL Maven Central](https://img.shields.io/maven-central/v/com.abroadbent/jackson-dsl?label=Jackson-DSL%20in%20Maven%20Central)
+![Gson DSL Maven Central](https://img.shields.io/maven-central/v/com.abroadbent/gson-dsl?label=Gson-DSL%20in%20Maven%20Central)
+
 ---
 
 # JSON DSL
