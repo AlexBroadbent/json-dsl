@@ -3,7 +3,6 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 plugins {
     kotlin("jvm") version "1.6.21"
     id("org.jlleitschuh.gradle.ktlint") version "10.2.0"
-    id("org.jetbrains.dokka") version "1.5.30"
     jacoco
     `maven-publish`
     signing
@@ -20,7 +19,6 @@ dependencies {
 subprojects {
     apply(plugin = "org.jetbrains.kotlin.jvm")
     apply(plugin = "org.jlleitschuh.gradle.ktlint")
-    apply(plugin = "org.jetbrains.dokka")
     apply(plugin = "org.gradle.jacoco")
     apply(plugin = "org.gradle.maven-publish")
     apply(plugin = "org.gradle.signing")
@@ -34,8 +32,6 @@ subprojects {
 
     dependencies {
         implementation(kotlin("stdlib", version = "1.6.21"))
-
-        dokkaHtmlPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:1.5.30")
 
         testImplementation("io.kotest:kotest-runner-junit5:5.3.1")
     }
