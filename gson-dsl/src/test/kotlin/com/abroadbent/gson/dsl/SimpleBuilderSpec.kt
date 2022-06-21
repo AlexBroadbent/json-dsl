@@ -69,10 +69,12 @@ class SimpleBuilderSpec : BaseSpec({
         val expected = JsonObject()
             .apply { addProperty("foo", "bar") }
             .apply {
-                add("egg", JsonArray()
-                    .apply { add(123) }
-                    .apply { add(456) }
-                    .apply { add(789) }
+                add(
+                    "egg",
+                    JsonArray()
+                        .apply { add(123) }
+                        .apply { add(456) }
+                        .apply { add(789) }
                 )
             }
 

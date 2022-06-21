@@ -68,7 +68,8 @@ class SimpleBuilderSpec : BaseSpec({
         val expected = mapper.createObjectNode()
             .put("foo", "bar")
             .set<ObjectNode>(
-                "egg", mapper.createArrayNode()
+                "egg",
+                mapper.createArrayNode()
                     .add(123)
                     .add(456)
                     .add(789)

@@ -22,7 +22,11 @@ class NestedBuilderSpec : BaseSpec({
                 add(
                     JsonArray()
                         .apply { add("bar") }
-                        .apply { add(JsonObject().apply { addProperty("two", "three") }) }
+                        .apply {
+                            add(
+                                JsonObject().apply { addProperty("two", "three") }
+                            )
+                        }
                 )
             }
 
