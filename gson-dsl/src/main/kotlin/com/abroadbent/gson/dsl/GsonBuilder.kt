@@ -25,6 +25,8 @@ abstract class GsonElement(val node: JsonElement) {
     override fun toString(): String = gson.toJson(node)
 }
 
+class GsonPrimitive(node: JsonPrimitive) : GsonElement(node)
+
 class GsonObject(node: JsonObject = JsonObject()) : GsonElement(node) {
 
     fun `object`(key: String, value: GsonObject.() -> Unit): GsonObject = put(key, GsonObject().apply(value).node)
@@ -38,6 +40,7 @@ class GsonObject(node: JsonObject = JsonObject()) : GsonElement(node) {
     fun put(key: String, value: Long): GsonObject = put(key, JsonPrimitive(value))
     fun put(key: String, value: Double): GsonObject = put(key, JsonPrimitive(value))
     fun put(key: String, value: Boolean): GsonObject = put(key, JsonPrimitive(value))
+    fun put(key: String, value: GsonPrimitive): GsonObject = put(key, value.node)
 
     private fun put(key: String, value: JsonElement) = (node as JsonObject).apply { add(key, value) }.let { this }
 }
@@ -54,6 +57,7 @@ class GsonArray(node: JsonArray = JsonArray()) : GsonElement(node) {
     fun add(value: Long): GsonArray = add(JsonPrimitive(value))
     fun add(value: Double): GsonArray = add(JsonPrimitive(value))
     fun add(value: Boolean): GsonArray = add(JsonPrimitive(value))
+    fun add(value: GsonPrimitive): GsonArray = add(value.node)
 
     private fun add(node: JsonElement) = (this.node as JsonArray).apply { add(node) }.let { this }
 }
@@ -63,3 +67,9 @@ fun obj(init: GsonObject.() -> Unit) = `object`(init)
 
 fun array(init: GsonArray.() -> Unit) = GsonArray().apply(init)
 fun arr(init: GsonArray.() -> Unit) = array(init)
+
+fun string(value: String) = GsonPrimitive(JsonPrimitive(value))
+fun int(value: Int) = GsonPrimitive(JsonPrimitive(value))
+fun long(value: Long) = GsonPrimitive(JsonPrimitive(value))
+fun double(value: Double) = GsonPrimitive(JsonPrimitive(value))
+fun boolean(value: Boolean) = GsonPrimitive(JsonPrimitive(value))
