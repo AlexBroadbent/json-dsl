@@ -11,22 +11,9 @@ jobs:
         with:
           distribution: temurin
           java-version: 11
-      - name: Restore gradle.properties
-        env:
-          GRADLE_PROPERTIES: ${{ secrets.GRADLE_PROPERTIES }}
-        shell: bash
-        run: |
-          mkdir -p ~/.gradle
-          echo "GRADLE_USER_HOME=${HOME}/.gradle" >> $GITHUB_ENV
-          echo "${GRADLE_PROPERTIES}" > ~/.gradle/gradle.properties
       - name: Gradle build
         uses: gradle/gradle-build-action@v2
         with:
           arguments: build
       - name: Publish reports to Codecov
         uses: codecov/codecov-action@v3
-      - name: Gradle publish
-        uses: gradle/gradle-build-action@v2
-        if: github.ref == 'refs/heads/main'
-        with:
-          arguments: publish
