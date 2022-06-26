@@ -18,6 +18,8 @@ jobs:
         env:
           NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
           NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
+      - name: Publish reports to Codecov
+        uses: codecov/codecov-action@v3
       - name: Gradle publish
         uses: gradle/gradle-build-action@v2
         if: github.ref == 'refs/heads/main'
