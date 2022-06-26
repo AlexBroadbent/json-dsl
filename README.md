@@ -1,17 +1,16 @@
-
 ![Github Actions Build](https://img.shields.io/github/workflow/status/AlexBroadbent/json-dsl/Build)
 ![Jackson DSL Maven Central](https://img.shields.io/maven-central/v/com.abroadbent/jackson-dsl?label=Jackson-DSL%20in%20Maven%20Central)
 ![Gson DSL Maven Central](https://img.shields.io/maven-central/v/com.abroadbent/gson-dsl?label=Gson-DSL%20in%20Maven%20Central)
+[![codecov](https://codecov.io/gh/AlexBroadbent/json-dsl/branch/main/graph/badge.svg?token=gi94zPKqgd)](https://codecov.io/gh/AlexBroadbent/json-dsl)
 
 ---
 
 # JSON DSL
 
-
-A type-safe builder wrapped around the [Jackson JSON library](https://github.com/FasterXML/jackson) and [Gson JSON library](https://github.com/google/gson).
+A type-safe builder wrapped around the [Jackson JSON library](https://github.com/FasterXML/jackson)
+and [Gson JSON library](https://github.com/google/gson).
 
 The aim of this project is to reduce the amount of boilerplate code required to instantiate JSON objects in code.
-
 
 ## Type Mappings
 
@@ -33,8 +32,42 @@ The functions are used in objects via the `put` method and in arrays via the `ad
 
 ---
 
-
 ## Examples
+
+### Primitives
+
+The following methods will create a root level JSON primitive, with the equivalent from the above table, which can be
+used to add to an array or object.
+
+| Method  | Example                   |
+|---------|---------------------------|
+| string  | string("abc")             |
+| int     | int(1701)                 |
+| long    | long(3478921748921748921) |
+| double  | double(1.3242)            |
+| boolean | boolean(false)            |
+
+An example of adding in one of these primitives can be found in the unit test [PrimitiveBuilderSpec], but they are split
+between declaration and operation.
+
+```kotlin
+val bar = string("bar")
+val pi = double(3.14)
+
+val json = `object` {
+    put("foo", primitive)
+    put("pi", pi)
+}
+```
+
+which produces the object:
+
+```json
+{ 
+  "foo": "bar",
+  "pi": 3.14
+}
+```
 
 ### Objects
 
@@ -109,7 +142,6 @@ val gson = JsonArray()
     .apply { add(67214621784621) }
     .apply { add(true) }
 ```
-
 
 ---
 

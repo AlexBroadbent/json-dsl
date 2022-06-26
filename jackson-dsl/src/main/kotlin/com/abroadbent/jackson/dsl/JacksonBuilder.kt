@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.node.IntNode
 import com.fasterxml.jackson.databind.node.LongNode
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.fasterxml.jackson.databind.node.TextNode
+import com.fasterxml.jackson.databind.node.ValueNode
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 
 val mapper = jacksonObjectMapper()
@@ -29,6 +30,8 @@ abstract class JacksonElement(val node: JsonNode) {
     override fun toString(): String = mapper.writeValueAsString(node)
 }
 
+class JacksonPrimitive(node: ValueNode) : JacksonElement(node)
+
 class JacksonObject(node: ObjectNode = mapper.createObjectNode()) : JacksonElement(node) {
 
     fun `object`(key: String, value: JacksonObject.() -> Unit): JacksonObject = put(key, JacksonObject().apply(value).node)
@@ -43,6 +46,7 @@ class JacksonObject(node: ObjectNode = mapper.createObjectNode()) : JacksonEleme
     fun put(key: String, value: Long): JacksonObject = put(key, LongNode(value))
     fun put(key: String, value: Double): JacksonObject = put(key, DoubleNode(value))
     fun put(key: String, value: Boolean): JacksonObject = put(key, BooleanNode.valueOf(value))
+    fun put(key: String, value: JacksonElement): JacksonObject = put(key, value.node)
 
     private fun put(key: String, value: JsonNode) = (node as ObjectNode).replace(key, value).let { this }
 }
@@ -60,6 +64,7 @@ class JacksonArray(array: ArrayNode = mapper.createArrayNode()) : JacksonElement
     fun add(value: Long): JacksonArray = add(LongNode(value))
     fun add(value: Double): JacksonArray = add(DoubleNode(value))
     fun add(value: Boolean): JacksonArray = add(BooleanNode.valueOf(value))
+    fun add(value: JacksonElement): JacksonArray = add(value.node)
 
     private fun add(node: JsonNode) = (this.node as ArrayNode).add(node).let { this }
 }
@@ -69,3 +74,9 @@ fun obj(init: JacksonObject.() -> Unit): JacksonObject = `object`(init)
 
 fun array(init: JacksonArray.() -> Unit): JacksonArray = JacksonArray().apply(init)
 fun arr(init: JacksonArray.() -> Unit): JacksonArray = array(init)
+
+fun string(value: String) = JacksonPrimitive(TextNode(value))
+fun int(value: Int) = JacksonPrimitive(IntNode(value))
+fun long(value: Long) = JacksonPrimitive(LongNode(value))
+fun double(value: Double) = JacksonPrimitive(DoubleNode(value))
+fun boolean(value: Boolean) = JacksonPrimitive(BooleanNode.valueOf(value))
