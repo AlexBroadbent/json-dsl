@@ -119,13 +119,11 @@ subprojects {
             }
         }
 
-        val NEXUS_USERNAME: String? by properties
-        val NEXUS_PASSWORD: String? by properties
         repositories {
             maven {
                 credentials {
-                    username = NEXUS_USERNAME
-                    password = NEXUS_PASSWORD
+                    username = System.getenv("NEXUS_USERNAME")
+                    password = System.getenv("NEXUS_PASSWORD")
                 }
                 name = this@subprojects.name
                 setUrl("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
