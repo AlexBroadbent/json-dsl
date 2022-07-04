@@ -119,8 +119,8 @@ subprojects {
             }
         }
 
-        val NEXUS_USERNAME: String by properties
-        val NEXUS_PASSWORD: String by properties
+        val NEXUS_USERNAME: String? by properties
+        val NEXUS_PASSWORD: String? by properties
         repositories {
             maven {
                 credentials {
