@@ -29,6 +29,30 @@ equivalents:
 
 The functions are used in objects via the `put` method and in arrays via the `add` method.
 
+---
+
+## Adding the Dependency
+
+Gradle:
+```gradle
+implementation("com.abroadbent:jackson-dsl:0.2.0")
+implementation("com.abroadbent:gson-dsl:0.2.0")
+```
+ 
+Maven:
+```pom
+<dependency>
+  <groupId>com.abroadbent</groupId>
+  <artifactId>jackson-dsl</artifactId>
+  <version>0.2.0</version>
+</dependency>
+
+<dependency>
+  <groupId>com.abroadbent</groupId>
+  <artifactId>gson-dsl</artifactId>
+  <version>0.2.0</version>
+</dependency>
+```
 
 ---
 
